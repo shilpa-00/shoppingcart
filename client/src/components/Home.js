@@ -8,7 +8,8 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const Home = () => {
     const { items, setItems, cart, search, setSearch, setTerm } = useContext(ItemsContext);
-    const id=localStorage.getItem('id')
+    const id = localStorage.getItem('id')
+    const token = localStorage.getItem('token')
     useEffect(() => {
         const t = localStorage.getItem('token')
         axios.get('http://localhost:8000/product/get', {
@@ -39,22 +40,26 @@ const Home = () => {
             })
         }
         else {
-            axios.post('http://localhost:8000/cart/add',{productId:item._id,userId:id,quantity:1})
-            .then(res=>{
-                toast.success('Product added to cart successfully', {
-                    position: "top-right",
-                    autoClose: 3000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "dark",
+            axios.post('http://localhost:8000/cart/add', { productId: item._id, userId: id, quantity: 1 }, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+                .then(res => {
+                    toast.success('Product added to cart successfully', {
+                        position: "top-right",
+                        autoClose: 3000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "dark",
+                    })
                 })
-            })
-            .catch(error=>{
-                console.log(error)
-            })
+                .catch(error => {
+                    console.log(error)
+                })
         }
     }
     const handleClear = () => {
@@ -67,7 +72,7 @@ const Home = () => {
     return (
         <div className="home">
             <ToastContainer />
-            <Navbar/>
+            <Navbar />
             {search.length === 0 ? (
                 <div className="home-container">
                     <h1>Products</h1>

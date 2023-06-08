@@ -7,11 +7,16 @@ import './Cart.css';
 const Cart = () => {
     const { cart, setCart } = useContext(ItemsContext);
     const id = localStorage.getItem('id')
+    const token = localStorage.getItem('token')
     const [cost, setCost] = useState(0);
     const [shipping, setShipping] = useState(0);
     useEffect(() => {
         // console.log(id)
-        axios.get(`http://localhost:8000/cart/get/${id}`)
+        axios.get(`http://localhost:8000/cart/get/${id}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
             .then(res => {
                 setCart(res.data)
                 // console.log(res.data)
@@ -19,7 +24,7 @@ const Cart = () => {
             .catch(error => {
                 console.log(error)
             })
-    }, [setCart, id])
+    }, [setCart, id, token])
     useEffect(() => {
         let totalCost = 0;
         if (cart.length !== 0) {
@@ -36,7 +41,11 @@ const Cart = () => {
         // return totalCost;
     }, [cart])
     const handleIncrement = (currentItem) => {
-        axios.patch(`http://localhost:8000/cart/update/${currentItem.cartId}`, { quantity: currentItem.quantity + 1 })
+        axios.patch(`http://localhost:8000/cart/update/${currentItem.cartId}`, { quantity: currentItem.quantity + 1 }, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
             .then(res => {
                 const updatedCart = cart.map((item) => {
                     if (item._id === currentItem._id) {
@@ -52,17 +61,25 @@ const Cart = () => {
     }
     const handleDecrement = (currentItem) => {
         if (currentItem.quantity === 1) {
-            axios.delete(`http://localhost:8000/cart/delete/${currentItem.cartId}`)
+            axios.delete(`http://localhost:8000/cart/delete/${currentItem.cartId}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
                 .then(res => {
                     const updatedCart = cart.filter((item) => item._id !== currentItem._id);
                     setCart(updatedCart)
                 })
-                .catch(error=>{
+                .catch(error => {
                     console.log(error)
                 })
         }
         else {
-            axios.patch(`http://localhost:8000/cart/update/${currentItem.cartId}`, { quantity: currentItem.quantity - 1 })
+            axios.patch(`http://localhost:8000/cart/update/${currentItem.cartId}`, { quantity: currentItem.quantity - 1 }, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
                 .then(res => {
                     const updatedCart = cart.map((item) => {
                         if (item._id === currentItem._id) {
