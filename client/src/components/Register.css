@@ -1,0 +1,57 @@
+.register{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #06e4b4;
+}
+.register-container{
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background-color: white;
+    .register-fields{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        .register-inp{
+            width: 250px;
+            padding-left: 10px;
+            height: 30px;
+            font-size: large;
+            border-radius: 5px;
+            border: 2px solid #06e4b4;
+        }
+        .register-inp:focus{
+            outline: none;
+        }
+        .register-submit{
+            width: 265px;
+            height: 32px;
+            font-size: large;
+            border: 2px solid #06e4b4;
+            border-radius: 5px;
+            background-color: white;
+            color: #06e4b4;
+        }
+        .register-submit:hover{
+            color: white;
+            font-weight: bold;
+            background-color: #06e4b4;
+        }
+        .register-footer{
+            padding-top: 10px;
+            display: flex;
+            gap: 6px;
+            .register-footer-member{
+                color: blue;
+                text-decoration: none;
+            }
+        }
+    }
+}
